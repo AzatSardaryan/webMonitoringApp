@@ -3,7 +3,6 @@ from app import app, db, bycrypt
 from app.models import User
 from flask import request
 
-
 @app.route("/")
 @app.route("/home")
 def home():
@@ -24,3 +23,15 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
+@app.route("/login", methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        email=request.form.get('email')
+        password=request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        if user and bycrypt.check_password_hash(user.password, password):
+            flash('Login successful!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login failed. Please check email and password', 'danger')
+    return render_template('login.html')

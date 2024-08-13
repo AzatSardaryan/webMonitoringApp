@@ -6,7 +6,7 @@ from flask import request
 @app.route("/")
 @app.route("/home")
 def home():
-    return "Welcome to the Web Monitoring App"
+    return render_template('home.html')
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
